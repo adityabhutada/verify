@@ -4,6 +4,20 @@ require 'vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+/**
+ * Write a message to submit_error.log while removing sensitive
+ * Authorization headers or bearer tokens.
+ */
+function log_submit_error(string $message): void
+{
+    $patterns = [
+        '/Authorization:\s*Bearer\s+[^\s]+/i',
+        '/Authorization:\s*[^\s]+/i',
+    ];
+    $sanitized = preg_replace($patterns, 'Authorization: [REDACTED]', $message);
+    file_put_contents('submit_error.log', $sanitized . PHP_EOL, FILE_APPEND);
+}
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -28,7 +42,7 @@ if (!validate($data)) {
 
 // ✅ Format DOB before saving
 if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data['dob'])) {
-    file_put_contents("submit_error.log", "[DOB ERROR] Invalid format: {$data['dob']}\n", FILE_APPEND);
+    log_submit_error("[DOB ERROR] Invalid format: {$data['dob']}");
     header("Location: index.php?error=1");
     exit;
 }
@@ -41,7 +55,7 @@ if (strlen($rawPhone) === 10) {
 } elseif (preg_match('/^\+1\d{10}$/', $data['phone'])) {
     // already correct
 } else {
-    file_put_contents("submit_error.log", "[PHONE ERROR] Invalid phone: {$data['phone']}\n", FILE_APPEND);
+    log_submit_error("[PHONE ERROR] Invalid phone: {$data['phone']}");
     header("Location: index.php?error=1");
     exit;
 }
@@ -66,7 +80,7 @@ try {
     ]);
     $id = $db->lastInsertId();
 } catch (Exception $e) {
-    file_put_contents("submit_error.log", "[DB ERROR] " . $e->getMessage() . "\n", FILE_APPEND);
+    log_submit_error("[DB ERROR] " . $e->getMessage());
     die("Database error.");
 }
 
@@ -128,15 +142,15 @@ $db->prepare("UPDATE verifications SET result_url = ?, plaid_id = ?, status = 'L
         $mail->AltBody = "Hi {$data['first_name']},\n\nPlease verify your identity using this link:\n{$verifyLink}\n\nIf you did not request this, please ignore.";
 
         $mail->send();
-        file_put_contents("submit_error.log", "[MAIL SUCCESS] Sent to {$data['email']} at " . date('Y-m-d H:i:s') . "\n", FILE_APPEND);
+        log_submit_error("[MAIL SUCCESS] Sent to {$data['email']} at " . date('Y-m-d H:i:s'));
     } catch (Exception $e) {
-        file_put_contents("submit_error.log", "[MAIL ERROR] " . $mail->ErrorInfo . "\n", FILE_APPEND);
+        log_submit_error("[MAIL ERROR] " . $mail->ErrorInfo);
     }
 
     header("Location: thankyou.php");
     exit;
 } else {
-    file_put_contents("submit_error.log", "[PLAID ERROR] " . json_encode($response) . "\n", FILE_APPEND);
+    log_submit_error("[PLAID ERROR] " . json_encode($response));
     header("Location: index.php?error=2");
     exit;
 }
