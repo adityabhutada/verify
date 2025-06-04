@@ -24,10 +24,17 @@
             <div class="alert alert-danger">Please fill out all fields and accept the terms.</div>
         <?php elseif (isset($_GET['error']) && $_GET['error'] == 2): ?>
             <div class="alert alert-warning">Submission error. Please try again later.</div>
+ codex/implement-token-based-csrf-protection
         <?php endif; ?>
 
         <form method="POST" action="submit.php" class="card p-4 shadow-lg border-0 rounded-4 bg-white">
             <input type="hidden" name="token" value="<?php echo htmlspecialchars($_SESSION['token'] ?? ''); ?>">
+
+        <?php endif; ?>
+
+        <form method="POST" action="submit.php" class="card p-4 shadow-lg border-0 rounded-4 bg-white">
+            <div id="clientError" class="alert alert-danger d-none"></div>
+ main
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="first_name" class="form-label">First Name</label>
@@ -87,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const phone = document.getElementById("phone");
     const state = document.getElementById("state");
     const zip = document.getElementById("zip");
+    const clientError = document.getElementById("clientError");
 
     function showError(input, message) {
         let error = input.parentElement.querySelector(".text-danger");
@@ -167,6 +175,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!isValid) {
             e.preventDefault();
+            clientError.textContent = "Please fix the highlighted fields.";
+            clientError.classList.remove("d-none");
+            console.log("Validation failed");
+        } else {
+            clientError.classList.add("d-none");
         }
     });
 });
