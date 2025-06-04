@@ -24,9 +24,24 @@ error_reporting(E_ALL);
 // Validate form input
 function validate($data) {
     foreach ($data as $key => $value) {
-        if (empty($value) && $key !== 'terms') return false;
+        if ($key !== 'terms' && empty($value)) {
+            return false;
+        }
     }
-    return isset($data['terms']);
+
+    if (!isset($data['terms'])) {
+        return false;
+    }
+
+    if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+
+    if (!preg_match('/^\+1\d{10}$/', $data['phone'])) {
+        return false;
+    }
+
+    return true;
 }
 
 // When running tests we only need the validate() function
