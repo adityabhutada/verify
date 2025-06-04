@@ -3,6 +3,14 @@ require 'config.php';
 require 'mail.php';
 
 $input = file_get_contents('php://input');
+if ($input === false) {
+    $err = error_get_last();
+    $msg = $err['message'] ?? 'Unable to read request body';
+    file_put_contents(LOG_PATH, "[ERROR] Input read failed: {$msg}\n", FILE_APPEND);
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid request']);
+    exit;
+}
 $data = json_decode($input, true);
 
 // Extract values
