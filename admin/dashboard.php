@@ -72,14 +72,22 @@
         $stmt = $db->prepare($sql);
         $stmt->execute($params);
         foreach ($stmt as $row) {
-            $result = $row['result_url'] ? "<a href='{$row['result_url']}' target='_blank'>View</a>" : "-";
-            echo "<tr><td>{$row['id']}</td>
-      <td>{$row['first_name']} {$row['last_name']}</td>
-      <td>{$row['email']}</td>
-      <td>{$row['status']}</td>
-      <td>{$row['plaid_id']}</td>
+            $resultUrl = htmlspecialchars($row['result_url'] ?? '', ENT_QUOTES, 'UTF-8');
+            $result = $row['result_url'] ? "<a href='{$resultUrl}' target='_blank'>View</a>" : "-";
+            $id = htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8');
+            $firstName = htmlspecialchars($row['first_name'], ENT_QUOTES, 'UTF-8');
+            $lastName = htmlspecialchars($row['last_name'], ENT_QUOTES, 'UTF-8');
+            $email = htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8');
+            $status = htmlspecialchars($row['status'], ENT_QUOTES, 'UTF-8');
+            $plaidId = htmlspecialchars($row['plaid_id'], ENT_QUOTES, 'UTF-8');
+            $createdAt = htmlspecialchars($row['created_at'], ENT_QUOTES, 'UTF-8');
+            echo "<tr><td>{$id}</td>
+      <td>{$firstName} {$lastName}</td>
+      <td>{$email}</td>
+      <td>{$status}</td>
+      <td>{$plaidId}</td>
       <td>$result</td>
-      <td>{$row['created_at']}</td></tr>";
+      <td>{$createdAt}</td></tr>";
         }
         ?>
         </tbody>
