@@ -22,7 +22,12 @@ This project provides a small web application for verifying user information and
    sqlite3 db.sqlite < migrations/init_db.sql
    ```
 
-3. Ensure `db.sqlite` is writable by the web server.
+3. Create a `logs/` directory for the application's log files and make sure it
+   is writable by the web server. By default, webhook activity is recorded in
+   `logs/webhook.log` and submission errors are written to
+   `logs/submit_error.log`.
+
+4. Ensure `db.sqlite` is writable by the web server.
 
 After these steps the application can be served by your preferred PHP server.
 
