@@ -14,6 +14,7 @@
     <thead class="table-light">
         <tr>
             <th>Timestamp</th>
+            <th>Event Time</th>
             <th>Event ID (Plaid ID)</th>
             <th>Status</th>
             <th>Message</th>
@@ -37,6 +38,7 @@
 
             echo "<tr>
                 <td>" . htmlspecialchars($row['received_at']) . "</td>
+                <td>" . htmlspecialchars($row["event_time"] ?? "") . "</td>
                 <td><code>" . htmlspecialchars($row['event_id']) . "</code></td>
                 <td>$statusBadge</td>
                 <td>" . nl2br(htmlspecialchars($row['message'])) . "</td>
