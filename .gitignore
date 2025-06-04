@@ -1,0 +1,13 @@
+# Ignore database files
+*.sqlite
+db.sqlite
+
+# Ignore logs
+logs/
+submit_error.log
+
+# Ignore vendor directories
+vendor/
+
+# Ignore compressed archives
+*.zip
