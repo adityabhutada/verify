@@ -25,3 +25,21 @@ This project provides a small web application for verifying user information and
 3. Ensure `db.sqlite` is writable by the web server.
 
 After these steps the application can be served by your preferred PHP server.
+
+## Environment Variables
+
+The application expects the following variables to be defined in the environment:
+
+- `API_KEY`
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USER`
+- `SMTP_PASS`
+- `SENDER_EMAIL`
+- `ADMIN_USER`
+- `ADMIN_PASS`
+- `ADMIN_EMAIL`
+- `DB_PATH` (optional, defaults to `db.sqlite`)
+- `LOG_PATH` (optional, defaults to `logs/webhook.log`)
+
+You can copy `.env.example` to configure these values when running locally.
