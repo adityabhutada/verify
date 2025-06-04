@@ -10,21 +10,15 @@ Authorization: Bearer tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd
 Authorization: Bearer tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd
 [PLAID ERROR] {"unixtime":1744232306,"error":true,"message":"Error - Authorization Error"}
 [HEADER DEBUG] Content-type: application/x-www-form-urlencoded
-Authorization: tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd
 [PLAID ERROR] {"unixtime":1744232917,"error":true,"message":"Error - Missing Required POST Field ","info":"DOB"}
 [HEADER DEBUG] Content-type: application/x-www-form-urlencoded
 Authorization: Bearer tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd
 [PLAID ERROR] {"unixtime":1744233157,"error":true,"message":"Error - Authorization Error"}
 [HEADER DEBUG] Content-type: application/x-www-form-urlencoded
-Authorization: tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd
 [HEADER DEBUG] Content-type: application/x-www-form-urlencoded
-Authorization: tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd
 [HEADER DEBUG] Content-type: application/x-www-form-urlencoded
-Authorization: tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd
 [HEADER DEBUG] Content-type: application/x-www-form-urlencoded
-Authorization: tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd
 [HEADER DEBUG] Content-type: application/x-www-form-urlencoded
-Authorization: tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd
 [MAIL SUCCESS] Sent to info@fusionbyte.io at 2025-04-09 22:03:37
 [MAIL SUCCESS] Sent to info@fusionbyte.io at 2025-04-09 22:15:12
 [PLAID ERROR] {"unixtime":1744294096,"error":true,"message":"Error - Submitted variable does not match documented formatting.","info":"zip"}

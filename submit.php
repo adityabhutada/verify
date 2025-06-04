@@ -74,7 +74,8 @@ unset($data['dob']);
 
 
 // Prepare API request
-$headers = "Content-type: application/x-www-form-urlencoded\r\nAuthorization: " . API_KEY;
+$headers = "Content-type: application/x-www-form-urlencoded\r\n" .
+           "Authorization: Bearer " . API_KEY;
 $options = [
     'http' => [
         'header'  => $headers,
