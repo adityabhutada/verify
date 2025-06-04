@@ -23,5 +23,6 @@ CREATE TABLE IF NOT EXISTS webhook_logs (
     message TEXT,
     info TEXT,
     details TEXT,
+    event_time TEXT,
     received_at TEXT DEFAULT CURRENT_TIMESTAMP
 );

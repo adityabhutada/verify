@@ -11,14 +11,15 @@ $info    = json_encode($data['info'] ?? []);
 $details = json_encode($data['details'] ?? []);
 $message = $data['message'] ?? '';
 $eventId = $data['id'] ?? '';
-$timestamp = date('c');
+$eventTime = isset($data['unixtime']) ? date('c', $data['unixtime']) : null;
+$receivedAt = date('c');
 
 // Log to DB
 try {
     $db = new PDO("sqlite:" . DB_PATH);
-    $stmt = $db->prepare("INSERT INTO webhook_logs (event_id, lead_status, message, info, details, received_at)
-                          VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$eventId, $status, $message, $info, $details, $timestamp]);
+    $stmt = $db->prepare("INSERT INTO webhook_logs (event_id, lead_status, message, info, details, event_time, received_at)
+                          VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$eventId, $status, $message, $info, $details, $eventTime, $receivedAt]);
 } catch (Exception $e) {
     file_put_contents(LOG_PATH, "[ERROR] DB log failed: " . $e->getMessage() . "\n", FILE_APPEND);
 }
@@ -34,7 +35,8 @@ try {
 // Email alert if failed
 if (strtolower($status) === 'failed') {
     $subject = "⚠️ Verification Failed - Event {$eventId}";
-    $body = "Verification failed at: {$timestamp}<br><br>
+    $timeForEmail = $eventTime ?? $receivedAt;
+    $body = "Verification failed at: {$timeForEmail}<br><br>
              <strong>Message:</strong> {$message}<br>
              <strong>Info:</strong><pre>{$info}</pre><br>
              <strong>Details:</strong><pre>{$details}</pre><br>";
