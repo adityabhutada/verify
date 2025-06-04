@@ -27,6 +27,7 @@
         <?php endif; ?>
 
         <form method="POST" action="submit.php" class="card p-4 shadow-lg border-0 rounded-4 bg-white">
+            <input type="hidden" name="token" value="<?php echo htmlspecialchars($_SESSION['token'] ?? ''); ?>">
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="first_name" class="form-label">First Name</label>

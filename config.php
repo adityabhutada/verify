@@ -15,4 +15,7 @@ define('DB_PATH', getenv('DB_PATH') ?: __DIR__ . '/db.sqlite');
 define('LOG_PATH', getenv('LOG_PATH') ?: __DIR__ . '/logs/webhook.log');
 
 session_start();
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
 ?>
