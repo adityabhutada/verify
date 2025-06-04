@@ -57,7 +57,7 @@
         $params = [];
 
         if (!empty($_GET['search'])) {
-            $where[] = "(first_name || ' ' || last_name LIKE :search OR email LIKE :search)";
+            $where[] = "((first_name || ' ' || last_name) LIKE :search OR email LIKE :search)";
             $params[':search'] = "%" . $_GET['search'] . "%";
         }
         if (!empty($_GET['status'])) {
