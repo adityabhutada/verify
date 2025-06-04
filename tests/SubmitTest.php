@@ -58,4 +58,51 @@ class SubmitTest extends TestCase
         ];
         $this->assertFalse(validate($data));
     }
+
+    public function testAuthorizationHeader()
+    {
+        stream_wrapper_unregister('https');
+        stream_wrapper_register('https', MockStream::class);
+
+        $data = ['foo' => 'bar'];
+        send_api_request($data);
+
+        stream_wrapper_restore('https');
+
+        $expected = 'Authorization: Bearer ' . API_KEY;
+        $this->assertStringContainsString($expected, MockStream::$lastHeaders);
+    }
+}
+
+class MockStream
+{
+    public $context;
+    public static $lastHeaders;
+
+    private $pos = 0;
+    private $data = '{"error":false}';
+
+    public function stream_open($path, $mode, $options, &$opened_path)
+    {
+        $opts = stream_context_get_options($this->context);
+        self::$lastHeaders = $opts['http']['header'] ?? '';
+        return true;
+    }
+
+    public function stream_read($count)
+    {
+        $chunk = substr($this->data, $this->pos, $count);
+        $this->pos += strlen($chunk);
+        return $chunk;
+    }
+
+    public function stream_eof()
+    {
+        return $this->pos >= strlen($this->data);
+    }
+
+    public function stream_stat()
+    {
+        return [];
+    }
 }

@@ -15,6 +15,20 @@ function validate($data) {
     return isset($data['terms']);
 }
 
+// Send the verification data to the Plaid API
+function send_api_request(array $data, string $url = 'https://idcheck.expressmarketinginc.com/intake/') {
+    $headers = "Content-type: application/x-www-form-urlencoded\r\nAuthorization: Bearer " . API_KEY;
+    $options = [
+        'http' => [
+            'header'  => $headers,
+            'method'  => 'POST',
+            'content' => http_build_query($data)
+        ]
+    ];
+    $context = stream_context_create($options);
+    return file_get_contents($url, false, $context);
+}
+
 // When running tests we only need the validate() function
 if (defined('TESTING') && TESTING) {
     return;
@@ -74,16 +88,7 @@ unset($data['dob']);
 
 
 // Prepare API request
-$headers = "Content-type: application/x-www-form-urlencoded\r\nAuthorization: " . API_KEY;
-$options = [
-    'http' => [
-        'header'  => $headers,
-        'method'  => 'POST',
-        'content' => http_build_query($data)
-    ]
-];
-$context = stream_context_create($options);
-$result = file_get_contents('https://idcheck.expressmarketinginc.com/intake/', false, $context);
+$result = send_api_request($data);
 $response = json_decode($result, true);
 
 // Handle API response
