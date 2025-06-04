@@ -49,6 +49,11 @@ if (defined('TESTING') && TESTING) {
     return;
 }
 
+if (empty($_POST['token']) || empty($_SESSION['token']) || !hash_equals($_SESSION['token'], $_POST['token'])) {
+    http_response_code(403);
+    exit('Invalid token');
+}
+
 $data = array_map('trim', $_POST);
 if (!validate($data)) {
     header("Location: index.php?error=1");

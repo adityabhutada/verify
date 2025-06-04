@@ -17,4 +17,7 @@ define('LOG_PATH', getenv('LOG_PATH') ?: __DIR__ . '/logs/webhook.log');
 define('SUBMIT_LOG_PATH', getenv('SUBMIT_LOG_PATH') ?: __DIR__ . '/logs/submit_error.log');
 
 session_start();
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
 ?>
