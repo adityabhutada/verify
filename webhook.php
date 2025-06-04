@@ -39,6 +39,25 @@ if (strtolower($status) === 'failed') {
              <strong>Info:</strong><pre>{$info}</pre><br>
              <strong>Details:</strong><pre>{$details}</pre><br>";
     sendAdminEmail($subject, $body);
+
+    // Send failure notice to user
+    try {
+        $stmt = $db->prepare("SELECT first_name, email FROM verifications WHERE plaid_id = ? LIMIT 1");
+        $stmt->execute([$eventId]);
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+            $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+            $failureLink = rtrim($scheme . $host, '/') . '/failure.php';
+            sendFailureEmail($row['email'], $row['first_name'], $failureLink);
+
+            // record in logs table
+            $infoJson = json_encode(['email' => $row['email']]);
+            $stmtLog = $db->prepare("INSERT INTO webhook_logs (event_id, lead_status, message, info, details, received_at) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmtLog->execute([$eventId, 'notification_sent', 'Failure email sent', $infoJson, '{}', date('c')]);
+        }
+    } catch (Exception $e) {
+        file_put_contents(LOG_PATH, "[ERROR] Failure notice error: " . $e->getMessage() . "\n", FILE_APPEND);
+    }
 }
 
 http_response_code(200);
