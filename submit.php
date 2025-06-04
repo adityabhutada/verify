@@ -15,6 +15,11 @@ function validate($data) {
     return isset($data['terms']);
 }
 
+// When running tests we only need the validate() function
+if (defined('TESTING') && TESTING) {
+    return;
+}
+
 $data = array_map('trim', $_POST);
 if (!validate($data)) {
     header("Location: index.php?error=1");

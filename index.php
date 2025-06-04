@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="dob" class="form-label">Date of Birth (YYYY-MM-DD)</label>
-                    <input name="dob" id="dob" class="form-control" type="date" required>
+                    <input name="dob" id="dob" class="form-control dob-field" type="date" required>
                 </div>
                 <div class="col-12 mt-2">
                     <div class="form-check">
