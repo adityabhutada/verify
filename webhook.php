@@ -2,6 +2,9 @@
 require 'config.php';
 require 'mail.php';
 
+$db = new PDO("sqlite:" . DB_PATH);
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
@@ -16,10 +19,17 @@ $receivedAt = date('c');
 
 // Log to DB
 try {
+ codex/refactor-pdo-initialization-and-error-handling
+    $stmt = $db->prepare(
+        "INSERT INTO webhook_logs (event_id, lead_status, message, info, details, received_at) VALUES (?, ?, ?, ?, ?, ?)"
+    );
+    $stmt->execute([$eventId, $status, $message, $info, $details, $timestamp]);
+
     $db = new PDO("sqlite:" . DB_PATH);
     $stmt = $db->prepare("INSERT INTO webhook_logs (event_id, lead_status, message, info, details, event_time, received_at)
                           VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$eventId, $status, $message, $info, $details, $eventTime, $receivedAt]);
+ main
 } catch (Exception $e) {
     file_put_contents(LOG_PATH, "[ERROR] DB log failed: " . $e->getMessage() . "\n", FILE_APPEND);
 }
