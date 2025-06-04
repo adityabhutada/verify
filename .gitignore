@@ -1,4 +1,3 @@
 /vendor/
 db.sqlite
 /logs/
-submit_error.log

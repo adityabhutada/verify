@@ -41,5 +41,7 @@ The application expects the following variables to be defined in the environment
 - `ADMIN_EMAIL`
 - `DB_PATH` (optional, defaults to `db.sqlite`)
 - `LOG_PATH` (optional, defaults to `logs/webhook.log`)
+- `SUBMIT_LOG_PATH` (optional, defaults to `logs/submit_error.log`)
 
-You can copy `.env.example` to configure these values when running locally.
+You can copy `.env.example` to configure these values when running locally. Error messages
+from `submit.php` are written to the file specified by `SUBMIT_LOG_PATH`.

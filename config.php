@@ -13,6 +13,8 @@ define('ADMIN_EMAIL', getenv('ADMIN_EMAIL'));
 
 define('DB_PATH', getenv('DB_PATH') ?: __DIR__ . '/db.sqlite');
 define('LOG_PATH', getenv('LOG_PATH') ?: __DIR__ . '/logs/webhook.log');
+// Path used by submit.php to record any failures
+define('SUBMIT_LOG_PATH', getenv('SUBMIT_LOG_PATH') ?: __DIR__ . '/logs/submit_error.log');
 
 session_start();
 ?>
