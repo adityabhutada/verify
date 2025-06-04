@@ -1,10 +1,13 @@
 {
-    "require-dev": {
-        "phpunit/phpunit": "^9"
-    },
-    "autoload": {
-        "psr-4": {
-            "PHPMailer\\PHPMailer\\": "vendor/PHPMailer/PHPMailer/"
-        }
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  },
+  "autoload": {
+    "psr-4": {
+      "PHPMailer\\PHPMailer\\": "vendor/PHPMailer/PHPMailer/"
     }
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
 }
