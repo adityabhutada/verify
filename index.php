@@ -26,7 +26,7 @@
             <div class="alert alert-warning">Submission error. Please try again later.</div>
         <?php endif; ?>
 
-        <form method="POST" action="submit.php" class="card p-4 shadow-lg border-0 rounded-4 bg-white" onsubmit="return formatBeforeSubmit()">
+        <form method="POST" action="submit.php" class="card p-4 shadow-lg border-0 rounded-4 bg-white">
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="first_name" class="form-label">First Name</label>

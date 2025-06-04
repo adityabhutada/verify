@@ -21,6 +21,26 @@ if (!validate($data)) {
     exit;
 }
 
+// ✅ Format DOB before saving
+if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data['dob'])) {
+    file_put_contents("submit_error.log", "[DOB ERROR] Invalid format: {$data['dob']}\n", FILE_APPEND);
+    header("Location: index.php?error=1");
+    exit;
+}
+$data['DOB'] = $data['dob'];
+
+// ✅ Normalize phone before saving
+$rawPhone = preg_replace('/\D/', '', $data['phone']);
+if (strlen($rawPhone) === 10) {
+    $data['phone'] = '+1' . $rawPhone;
+} elseif (preg_match('/^\+1\d{10}$/', $data['phone'])) {
+    // already correct
+} else {
+    file_put_contents("submit_error.log", "[PHONE ERROR] Invalid phone: {$data['phone']}\n", FILE_APPEND);
+    header("Location: index.php?error=1");
+    exit;
+}
+
 // Save to database
 try {
     $db = new PDO("sqlite:" . DB_PATH);
@@ -45,26 +65,8 @@ try {
     die("Database error.");
 }
 
-// ✅ Format DOB
-if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data['dob'])) {
-    file_put_contents("submit_error.log", "[DOB ERROR] Invalid format: {$data['dob']}\n", FILE_APPEND);
-    header("Location: index.php?error=1");
-    exit;
-}
-$data['DOB'] = $data['dob'];
 unset($data['dob']);
 
-// ✅ Normalize phone
-$rawPhone = preg_replace('/\D/', '', $data['phone']);
-if (strlen($rawPhone) === 10) {
-    $data['phone'] = '+1' . $rawPhone;
-} elseif (preg_match('/^\+1\d{10}$/', $data['phone'])) {
-    // already correct
-} else {
-    file_put_contents("submit_error.log", "[PHONE ERROR] Invalid phone: {$data['phone']}\n", FILE_APPEND);
-    header("Location: index.php?error=1");
-    exit;
-}
 
 // Prepare API request
 $headers = "Content-type: application/x-www-form-urlencoded\r\nAuthorization: " . API_KEY;
