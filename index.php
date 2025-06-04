@@ -72,7 +72,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="terms" value="1" id="termsCheck" required>
                         <label class="form-check-label" for="termsCheck">
-                            I agree to the <a href="/verify/terms-and-privacy.html" target="_blank">terms and privacy policy</a>.
+                            I agree to the <a href="terms-and-privacy.html" target="_blank">terms and privacy policy</a>.
                         </label>
                     </div>
                 </div>
