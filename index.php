@@ -102,6 +102,18 @@ document.addEventListener("DOMContentLoaded", function () {
         if (error) error.remove();
     }
 
+    // Ensure consistent formatting prior to submission
+    function formatBeforeSubmit() {
+        const raw = phone.value.replace(/\D/g, "");
+        if (raw.length === 10) {
+            phone.value = "+1" + raw;
+        } else if (raw.length === 11 && raw.startsWith("1")) {
+            phone.value = "+" + raw;
+        }
+        state.value = state.value.toUpperCase().slice(0, 2);
+        zip.value = zip.value.replace(/\D/g, "").slice(0, 5);
+    }
+
     // Live phone formatting
     phone.addEventListener("input", () => {
         let raw = phone.value.replace(/\D/g, '');
@@ -125,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Validate before submit
     form.addEventListener("submit", function (e) {
+        formatBeforeSubmit();
         let isValid = true;
 
         const phoneVal = phone.value.trim();
