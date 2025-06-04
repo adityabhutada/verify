@@ -4,7 +4,7 @@ define('API_KEY', 'tO7FhdtPBXy7UyCvrL0q4eq8xFC7qhmd');
 define('SENDER_EMAIL', 'verify@findthefirm.com');
 define('SMTP_HOST', 'smtp.hostinger.com');
 define('SMTP_USER', 'verify@findthefirm.com');
-define('SMTP_PASS', 'Speed@#$123');
+define('SMTP_PASS', 'Speed@#$135');
 define('SMTP_PORT', 465);
 
 define('ADMIN_USER', 'admin');
