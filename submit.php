@@ -5,7 +5,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 /**
- * Write a message to submit_error.log while removing sensitive
+ * Write a message to the submit log while removing sensitive
  * Authorization headers or bearer tokens.
  */
 function log_submit_error(string $message): void
@@ -15,7 +15,7 @@ function log_submit_error(string $message): void
         '/Authorization:\s*[^\s]+/i',
     ];
     $sanitized = preg_replace($patterns, 'Authorization: [REDACTED]', $message);
-    file_put_contents('submit_error.log', $sanitized . PHP_EOL, FILE_APPEND);
+    file_put_contents(SUBMIT_LOG_PATH, $sanitized . PHP_EOL, FILE_APPEND);
 }
 
 ini_set('display_errors', 1);
@@ -115,7 +115,7 @@ $options = [
 $context = stream_context_create($options);
 $result = file_get_contents('https://idcheck.expressmarketinginc.com/intake/', false, $context);
 if ($result === false) {
-    file_put_contents("submit_error.log", "[FETCH ERROR] " . json_encode(error_get_last()) . "\n", FILE_APPEND);
+    file_put_contents(SUBMIT_LOG_PATH, "[FETCH ERROR] " . json_encode(error_get_last()) . "\n", FILE_APPEND);
     header("Location: index.php?error=2");
     exit;
 }
