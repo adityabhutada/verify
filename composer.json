@@ -1,10 +1,16 @@
 {
-    "require-dev": {
-        "phpunit/phpunit": "^9"
-    },
-    "autoload": {
-        "psr-4": {
-            "PHPMailer\\PHPMailer\\": "vendor/PHPMailer/PHPMailer/"
-        }
+  "name": "example/contact-form",
+  "description": "Simple PHP contact/verification form",
+  "license": "proprietary",
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  },
+  "autoload": {
+    "psr-4": {
+      "PHPMailer\\PHPMailer\\": "vendor/PHPMailer/PHPMailer/"
     }
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
 }
