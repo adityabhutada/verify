@@ -85,6 +85,11 @@ $options = [
 ];
 $context = stream_context_create($options);
 $result = file_get_contents('https://idcheck.expressmarketinginc.com/intake/', false, $context);
+if ($result === false) {
+    file_put_contents("submit_error.log", "[FETCH ERROR] " . json_encode(error_get_last()) . "\n", FILE_APPEND);
+    header("Location: index.php?error=2");
+    exit;
+}
 $response = json_decode($result, true);
 
 // Handle API response
